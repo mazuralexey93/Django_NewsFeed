@@ -1,2 +1,22 @@
 /Lib
 /Scripts
+pyvenv.cfg
+
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+
+db.sqlite3
+db.sqlite3-journal
+media
+
+# enviroment
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
