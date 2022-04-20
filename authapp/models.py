@@ -8,15 +8,20 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.timezone import now
-
+from django.utils.translation import gettext as _
 
 class User(AbstractUser):
-    is_subscriber = models.BooleanField(default=False)
+
+    is_subscriber = models.BooleanField(default=True)
     is_auhor = models.BooleanField(default=False)
     activation_key = models.CharField(max_length=128, blank=True)
     activation_key_expires = models.DateTimeField(blank=True)
-    activated = models.BooleanField('Активирован ли аккаунт', default=True)
+    activated = models.BooleanField(default=True)
+    # activated = models.BooleanField('Активирован ли аккаунт', default=True)
 
+    USERNAME_FIELD = 'email'
+    email = models.EmailField(_('email address'), unique=True)  # changes email to unique and blank to false
+    REQUIRED_FIELDS = ['username']  # removes email from REQUIRED_FIELDS
 
 
     def save(self, *args, **kwargs):

@@ -4,8 +4,20 @@ from django.urls import reverse
 from authapp.models import User
 from django.contrib import messages
 from django.db import transaction
-
+from django.contrib.auth.backends import ModelBackend
 from authapp.forms import UserLoginForm, UserRegisterForm, UserEditForm
+
+class EmailBackend(ModelBackend):
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        UserModel = get_user_model()
+        try:
+            user = UserModel.objects.get(email=username)
+        except UserModel.DoesNotExist:
+            return None
+        else:
+            if user.check_password(password):
+                return user
+        return None
 
 def login(request):
     title = 'вход'
@@ -14,19 +26,25 @@ def login(request):
     next = request.GET['next'] if 'next' in request.GET.keys() else ''
 
     if request.method == 'POST' and login_form.is_valid():
-        username = request.POST['username']
-        passsword = request.POST['password']
+        # email = request.POST['email']
+        # password = request.POST['password']
 
-        user = auth.authenticate(username=username, password=passsword)
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+
+        user = auth.authenticate(email=email, password=password)
         if user.activated:
             auth.authenticate()
             if user and user.is_active:
-                auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                # auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                auth.login(request, user, backend='EmailBackend')
                 if 'next' in request.POST.keys():
                     return HttpResponseRedirect(request.POST['next'])
                 else:
                     return HttpResponseRedirect(reverse('index'))
         messages.error(request, 'Аккаунт не активирован')
+
 
     context = {
         'title': title,
