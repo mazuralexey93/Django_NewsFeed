@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="#">
+    {% block title %}
     <title>Mainpage</title>
+    {% endblock %}
     <link rel="stylesheet" type="text/css" href="../static/css/style.css" title="style"/>
-
 </head>
 
 <body>
@@ -22,7 +23,7 @@
     <div id="menubar">
         <ul id="menu">
             <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
-            <li class="selected"><a href="base.html">Home</a></li>
+            <li class="selected"><a href="{% url 'posts:index' %}">Home</a></li>
             <li><a href="examples.html">Все статьи</a></li>
             <li><a href="page.html">Для подписчиков</a></li>
             <li><a href="another_page.html">Авторизация</a></li>
@@ -55,7 +56,7 @@
     </div>
     <div id="content">
         {% block pagecontent %}
-
+        dasdasda
         {% endblock %}
     </div>
 </div>

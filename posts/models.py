@@ -12,6 +12,7 @@ class PostItem(models.Model):
     author = models.CharField(verbose_name='Автор', max_length=255)
     text = models.TextField()
     created_at = models.DateTimeField(verbose_name='Дата добавления', auto_created=True, auto_now_add=True)
+    public = models.BooleanField(default=True)
 
     def __str__(self):
         return self.title

@@ -1,3 +1,6 @@
 from django.contrib import admin
+from posts.models import Category, PostItem
 
-# Register your models here.
+
+admin.site.register(PostItem)
+admin.site.register(Category)
