@@ -1,12 +1,9 @@
 from django.shortcuts import render
 from django.views.generic.list import ListView
-from django.views.generic.base import TemplateView
 from posts.models import PostItem, Category
-from common.views import CommonContextMixin
 
 
-
-class ItemsListView(ListView, CommonContextMixin):
+class ItemsListView(ListView):
     model = PostItem
     queryset = PostItem.objects.all()
     template_name = "postlist.html"
