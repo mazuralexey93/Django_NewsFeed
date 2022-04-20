@@ -16,8 +16,8 @@ class User(AbstractUser):
     is_auhor = models.BooleanField(default=False)
     activation_key = models.CharField(max_length=128, blank=True)
     activation_key_expires = models.DateTimeField(blank=True)
-    activated = models.BooleanField(default=True)
-    # activated = models.BooleanField('Активирован ли аккаунт', default=True)
+    # activated = models.BooleanField(default=True)
+    activated = models.BooleanField('Активирован ли аккаунт', default=True)
 
     USERNAME_FIELD = 'email'
     email = models.EmailField(_('email address'), unique=True)  # changes email to unique and blank to false

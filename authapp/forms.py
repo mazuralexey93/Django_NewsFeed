@@ -39,4 +39,3 @@ class UserEditForm(UserChangeForm):
             if field_name == 'password':
                 field.widget = forms.HiddenInput()
 
-        return data

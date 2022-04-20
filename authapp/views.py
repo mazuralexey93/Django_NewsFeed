@@ -4,24 +4,13 @@ from django.urls import reverse
 from authapp.models import User
 from django.contrib import messages
 from django.db import transaction
-from django.contrib.auth.backends import ModelBackend
 from authapp.forms import UserLoginForm, UserRegisterForm, UserEditForm
 
-class EmailBackend(ModelBackend):
-    def authenticate(self, request, username=None, password=None, **kwargs):
-        UserModel = get_user_model()
-        try:
-            user = UserModel.objects.get(email=username)
-        except UserModel.DoesNotExist:
-            return None
-        else:
-            if user.check_password(password):
-                return user
-        return None
+from ArticleFeed.settings import AUTHENTICATION_BACKENDS
 
-def login(request):
+def login(request, user=None):
+
     title = 'вход'
-
     login_form = UserLoginForm(data=request.POST)
     next = request.GET['next'] if 'next' in request.GET.keys() else ''
 
@@ -29,21 +18,22 @@ def login(request):
         # email = request.POST['email']
         # password = request.POST['password']
 
+
         email = request.POST.get('email')
         password = request.POST.get('password')
-
-
         user = auth.authenticate(email=email, password=password)
+
         if user.activated:
-            auth.authenticate()
             if user and user.is_active:
+                auth.authenticate()
                 # auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-                auth.login(request, user, backend='EmailBackend')
+                auth.login(request, user, backend=AUTHENTICATION_BACKENDS)
                 if 'next' in request.POST.keys():
                     return HttpResponseRedirect(request.POST['next'])
                 else:
                     return HttpResponseRedirect(reverse('index'))
-        messages.error(request, 'Аккаунт не активирован')
+
+            messages.error(request, 'Аккаунт не активирован')
 
 
     context = {
@@ -80,7 +70,7 @@ def edit(request):
     title = 'редактирование'
 
     if request.method == 'POST':
-        edit_form = UserEditForm(request.POST, request.FILES, instance=request.user)
+        edit_form = UserEditForm(request.POST, instance=request.user)
         if edit_form.is_valid() :
             edit_form.save()
             return HttpResponseRedirect(reverse('auth:edit'))
