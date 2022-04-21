@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="#">
+    {% block title %}
     <title>Mainpage</title>
+    {% endblock %}
     <link rel="stylesheet" type="text/css" href="../static/css/style.css" title="style"/>
-
 </head>
 
 <body>
@@ -15,17 +16,18 @@
     <div id="logo">
         <div id="logo_text">
             <!-- class="logo_colour", allows you to change the colour of the text -->
-            <h1><a href="base.html">colour<span class="logo_colour">green</span></a></h1>
+            <h1><a href="{% url 'index' %}">colour<span class="logo_colour">green</span></a></h1>
             <h2>Задачка от ЛИИС</h2>
         </div>
     </div>
     <div id="menubar">
         <ul id="menu">
             <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
-            <li class="selected"><a href="base.html">Home</a></li>
-            <li><a href="examples.html">Все статьи</a></li>
+            <li class="selected"><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'posts:postslist' %}">Все статьи</a></li>
+
             <li><a href="page.html">Для подписчиков</a></li>
-            <li><a href="another_page.html">Авторизация</a></li>
+            <li><a href="{% url 'authapp:login' %}">Авторизация</a></li>
             <li><a href="contact.html">Стать Автором</a></li>
         </ul>
     </div>
@@ -35,6 +37,25 @@
 <div id="site_content">
     <div class="sidebar">
         <!-- insert your sidebar items here -->
+         <h3>Личный кабинет</h3>
+        <ul>
+            {% if user.is_authenticated %}
+            <li>
+                Пользователя: {{ user.username|default:'Пользователь' }}
+            <li><a href="{% url 'auth:edit' %}">Профиль</a></li>
+        </ul>
+        </li>
+        {% endif %}
+        <li>
+            {% if user.is_authenticated %}
+            <a href="{% url 'auth:logout' %}">Выйти</a>
+            {% else %}
+            <a href="{% url 'auth:login' %}">Войти</a>
+            {% endif %}
+        </li>
+        <li><a href="#">link 3</a></li>
+        <li><a href="#">link 4</a></li>
+        </ul>
         <h3>Latest News</h3>
         <h4>New Website Launched</h4>
         <h5>January 1st, 2010</h5>
@@ -45,13 +66,7 @@
         <h5>January 1st, 2010</h5>
         <p>2010 sees the redesign of our website. Take a look around and let us know what you think.<br/><a href="#">Read
             more</a></p>
-        <h3>Useful Links</h3>
-        <ul>
-            <li><a href="#">link 1</a></li>
-            <li><a href="#">link 2</a></li>
-            <li><a href="#">link 3</a></li>
-            <li><a href="#">link 4</a></li>
-        </ul>
+
     </div>
     <div id="content">
         {% block pagecontent %}

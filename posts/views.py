@@ -1,16 +1,21 @@
 from django.shortcuts import render
 from django.views.generic.list import ListView
-from posts.models import PostItem
+from posts.models import PostItem, Category
+
 
 class ItemsListView(ListView):
     model = PostItem
+    queryset = PostItem.objects.all()
     template_name = "postlist.html"
-    # queryset = PostItem.objects.all()
+    title = 'Posts'
 
     def get_queryset(self):
-        # queryset = PostItem.on_site.select_related('category').prefetch_related('new_category').all()
-        # category_id = self.kwargs.get('category_id')
-        # return queryset.filter(category_id=category_id) if category_id else queryset
-        return PostItem.objects.all()
+        queryset = super(ItemsListView, self).get_queryset()
+        category_id = self.kwargs.get('category_id')
+        return queryset.filter(category_id=category_id) if category_id else queryset
 
+    def get_context_data(self, **kwargs):
+        context = super(ItemsListView, self).get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 

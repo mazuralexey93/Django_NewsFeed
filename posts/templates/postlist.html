@@ -1,13 +1,18 @@
-<!DOCTYPE html>
 {% extends 'base.html' %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Posts list</title>
-
-</head>
+{% load static %}
 
 {% block pagecontent %}
 
+<h1> Articles </h1>
+
+<div class="post-item">
+    {% for post in object_list %}
+    <p>
+    <h2>{{ post.title}}</h2>
+    <h4>{{ post.author}}, {{ post.created_at}}</h4>
+    {{ post.text }}
+    </p>
+    {% endfor %}
+</div>
+
 {% endblock %}
-</html>

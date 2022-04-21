@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block pagecontent %}
+
+<h1> Mainpage </h1>
+
+<h1> Hello, dear {{ user.first_name|default:'Пользователь' }} </h1>
+
+{% endblock %}
