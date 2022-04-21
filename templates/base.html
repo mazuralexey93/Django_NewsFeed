@@ -7,7 +7,7 @@
     {% block title %}
     <title>Mainpage</title>
     {% endblock %}
-   {% block style %}
+    {% block style %}
     <link rel="stylesheet" type="text/css" href="../static/css/style.css" title="style"/>
     {% endblock %}
 </head>
@@ -43,23 +43,31 @@
         <ul>
             {% if user.is_authenticated %}
             <li>
-                Пользователя: {{ user.username|default:'Пользователь' }}
+                Пользователь: {{ user.username|default:'Пользователь' }}
             <li><a href="{% url 'auth:edit' %}">Профиль</a></li>
         </ul>
         </li>
         {% endif %}
         <li>
             {% if user.is_authenticated %}
-            <a href="{% url 'auth:logout' %}">Выйти</a>
-            <a href="{% url 'posts:secretpostslist' %}">Для подписчиков</a>
+            <div>
+                <a href="{% url 'auth:logout' %}">Выйти</a>
+            </div>
+            <br>
+            <div>
+                <a href="{% url 'posts:secretpostslist' %}">Для подписчиков</a>
+            </div>
+                  <br>
+            <div>
+                <a href="{% url 'posts:usersposts' %}">Мои статьи</a>
+            </div>
+
             {% else %}
             <a href="{% url 'auth:login' %}">Войти</a>
+            <br>
 
             {% endif %}
         </li>
-
-
-        <li><a href="#">link 4</a></li>
 
         </ul>
         <h3>Latest News</h3>

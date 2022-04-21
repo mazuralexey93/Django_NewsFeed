@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="/static/css/style.css" title="style"/>
+{% endblock %}
+
+{% block pagecontent %}
+<h1> {{ post.title }} </h1>
+<h1> {{ post.category.title }} </h1>
+
+  <div class="full-post">
+        <div class="title">
+            <h2>
+                 <div class="post-date">{{ post.created_at }}&nbsp;by&nbsp;{{ post.author_id }}</div>
+            </h2>
+
+        </div>
+        {{ post.formatted_markdown | safe | linebreaksbr }}
+    </div>
+</div>
+
+{% endblock %}
