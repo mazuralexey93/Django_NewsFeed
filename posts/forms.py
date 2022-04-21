@@ -1,7 +1,7 @@
 from django import forms
 from markdownx.fields import MarkdownxFormField
 
-from maincatapp.models import UserPost
+from posts.models import User
 
 
 class PostForm(forms.Form):
