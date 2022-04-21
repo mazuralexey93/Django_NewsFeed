@@ -1,3 +1,4 @@
+import common.user_backend
 from django.shortcuts import render, HttpResponseRedirect, redirect
 from django.contrib import auth
 from django.urls import reverse
@@ -15,19 +16,16 @@ def login(request, user=None):
     next = request.GET['next'] if 'next' in request.GET.keys() else ''
 
     if request.method == 'POST' and login_form.is_valid():
-        # email = request.POST['email']
-        # password = request.POST['password']
-
 
         email = request.POST.get('email')
         password = request.POST.get('password')
-        user = auth.authenticate(email=email, password=password)
+        username = request.POST.get('username')
+        user = auth.authenticate(username=username, password=password)
 
         if user.activated:
             if user and user.is_active:
                 auth.authenticate()
-                # auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-                auth.login(request, user, backend=AUTHENTICATION_BACKENDS)
+                auth.login(request, user, backend='common.user_backend.EmailBackend')
                 if 'next' in request.POST.keys():
                     return HttpResponseRedirect(request.POST['next'])
                 else:

@@ -4,7 +4,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
 
 class EmailBackend(BaseBackend):
-    def authenticate(self, request, username=None, password=None, **kwargs):
+    def authenticate(self, request, username=None, email=None, password=None, **kwargs):
         UserModel = get_user_model()
         try:
             user = UserModel.objects.get(email=username)
