@@ -7,7 +7,9 @@
     {% block title %}
     <title>Mainpage</title>
     {% endblock %}
+   {% block style %}
     <link rel="stylesheet" type="text/css" href="../static/css/style.css" title="style"/>
+    {% endblock %}
 </head>
 
 <body>
@@ -26,7 +28,7 @@
             <li class="selected"><a href="{% url 'index' %}">Home</a></li>
             <li><a href="{% url 'posts:postslist' %}">Все статьи</a></li>
 
-            <li><a href="page.html">Для подписчиков</a></li>
+            <li><a href="{% url 'posts:secretpostslist' %}">Для подписчиков</a></li>
             <li><a href="{% url 'authapp:login' %}">Авторизация</a></li>
             <li><a href="contact.html">Стать Автором</a></li>
         </ul>
@@ -37,7 +39,7 @@
 <div id="site_content">
     <div class="sidebar">
         <!-- insert your sidebar items here -->
-         <h3>Личный кабинет</h3>
+        <h3>Личный кабинет</h3>
         <ul>
             {% if user.is_authenticated %}
             <li>
@@ -49,12 +51,16 @@
         <li>
             {% if user.is_authenticated %}
             <a href="{% url 'auth:logout' %}">Выйти</a>
+            <a href="{% url 'posts:secretpostslist' %}">Для подписчиков</a>
             {% else %}
             <a href="{% url 'auth:login' %}">Войти</a>
+
             {% endif %}
         </li>
-        <li><a href="#">link 3</a></li>
+
+
         <li><a href="#">link 4</a></li>
+
         </ul>
         <h3>Latest News</h3>
         <h4>New Website Launched</h4>
@@ -69,6 +75,7 @@
 
     </div>
     <div id="content">
+
         {% block pagecontent %}
 
         {% endblock %}
