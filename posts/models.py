@@ -24,7 +24,7 @@ class PostItem(models.Model):
 
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     author = models.ForeignKey(User, on_delete=models.PROTECT)
-
+    delete_flag = models.BooleanField(default=False)
     def __str__(self):
         return self.title
 

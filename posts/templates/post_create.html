@@ -6,13 +6,10 @@
 {% endblock %}
 
 {% block pagecontent %}
-
-<div class="col-3 mx-auto">
-    <form class="form-horizontal" action="{% url 'posts:newpost' %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+    <h1>New post</h1>
+    <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_p }}
-        <input class="form-control" type="submit" value="Save">
+        <button type="submit" class="save btn btn-default">Save</button>
     </form>
-</div>
 
 {% endblock %}

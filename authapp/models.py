@@ -22,6 +22,7 @@ class User(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)  # changes email to unique and blank to false
     REQUIRED_FIELDS = ['username']  # removes email from REQUIRED_FIELDS
 
+    delete_flag = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if not self.pk:
