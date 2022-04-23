@@ -29,7 +29,7 @@ class UserRegisterForm(UserCreationForm):
 class UserEditForm(UserChangeForm):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'email', 'password')
+        fields = ('username', 'first_name', 'email', 'password', 'is_auhor')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

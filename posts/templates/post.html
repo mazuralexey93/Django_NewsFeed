@@ -19,5 +19,6 @@
         {{ post.formatted_markdown | safe | linebreaksbr }}
     </div>
 </div>
+<a class="btn" href="{% url 'posts:editpost' pk=post.pk %}">Редактировать</a>
 
 {% endblock %}

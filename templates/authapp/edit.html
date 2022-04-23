@@ -5,9 +5,6 @@
 {% block content %}
 <div class="col-4 mx-auto">
     <div class="row">
-        <div class="user_avatar">
-            <img src="/media/{{ user.avatar }}" class="rounded-circle">
-        </div>
     </div>
     <div class="row">
         <form class="form-horizontal" action="{% url 'auth:edit' %}" method="post" enctype="multipart/form-data">

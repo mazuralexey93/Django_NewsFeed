@@ -1,5 +1,5 @@
-from django.shortcuts import render,redirect, HttpResponseRedirect
-from django.views.generic.list import ListView
+from django.shortcuts import render,redirect, HttpResponseRedirect, get_object_or_404
+from django.views.generic import ListView,DetailView
 from django.views import View
 from posts.models import PostItem, Category
 from authapp.models import User
@@ -41,13 +41,14 @@ class PrivatePostsListView(PostsListView):
         return context
 
 
-class PostReaderView(ListView):
+class PostReaderView(DetailView):
     form_class = PostForm
     template_name = 'post.html'
+    context_object_name = 'post'
 
-    def get(self, request, post_id):
+    def get(self, request, pk):
         categories = Category.objects.all().order_by('-title')
-        post = PostItem.objects.get(id=post_id)
+        post = PostItem.objects.get(pk=pk)
         context = {
             'title': post.title,
             'categories': categories,
@@ -106,8 +107,6 @@ def post_new(request):
         form = PostForm(request.POST)
 
         if PostForm.is_valid:
-            messages.success(request, "ок")
-
             post = form.save(commit=False)
             post.author = request.user
             post.created_at = now()
@@ -118,3 +117,23 @@ def post_new(request):
 
     context = {'form': form, 'title': title}
     return render(request, 'post_create.html', context)
+
+
+def post_edit(request, pk):
+    title = 'редактировать статью'
+
+    post = get_object_or_404(PostItem, pk=pk)
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.created_at = now()
+            post.save()
+            return redirect('post_detail', pk=post.pk)
+
+    else:
+        form = PostForm(instance=post)
+
+    context = {'form': form, 'title': title}
+    return render(request, 'post_edit.html', context)
