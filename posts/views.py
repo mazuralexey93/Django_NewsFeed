@@ -13,6 +13,14 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.utils.decorators import method_decorator
 
+class TestMixin1(UserPassesTestMixin):
+    login_url = '/auth/edit/'
+
+    def test_func(self, request):
+        return request.user.role == 'sub'
+
+
+
 class PostsListView(ListView):
     model = PostItem
     queryset = PostItem.objects.filter(public=True).order_by('-created_at')
@@ -30,35 +38,36 @@ class PostsListView(ListView):
         context['posts'] = PostItem.objects.exclude(delete_flag=True).exclude(private=True).order_by('-created_at')
         return context
 
+@user_passes_test(lambda user: user.role=='sub', login_url='/auth/edit/')
+def private_posts(request):
+    title = 'для подписчиков'
+    categories = Category.objects.all()
+    posts = PostItem.objects.exclude(delete_flag=True).filter(private=True).order_by('-created_at')
 
-class PrivatePostsListView(ListView, UserPassesTestMixin):
-    PostItem.objects.exclude(delete_flag=True).filter(private=True).order_by('-created_at')
+    context = {
+        'title': title,
+        'categories': categories,
+        'posts': posts,
+    }
+
+    return render(request, 'secret_postlist.html', context=context)
+
+class PrivatePostsListView(ListView, TestMixin1):
+    model = PostItem
     queryset = PostItem.objects.filter(private=True).order_by('-created_at')
     template_name = "secret_postlist.html"
     title = 'Secret Posts'
-    login_url = '/auth/edit/'
-
 
     def get_queryset(self):
         queryset = super(PrivatePostsListView, self).get_queryset()
         category_id = self.kwargs.get('category_id')
         return queryset.filter(category_id=category_id) if category_id else queryset
 
-
     def get_context_data(self, **kwargs):
         context = super(PrivatePostsListView, self).get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         context['posts'] = PostItem.objects.exclude(delete_flag=True).filter(private=True).order_by('-created_at')
         return context
-
-    def test_func(self, request):
-        x = self.request.user.role
-        y = self.kwargs['sub']
-        if x == y:
-            return True
-        else:
-            if self.request.user.is_authenticated():
-                raise Http404("You are not authenticated to edit this profile")
 
 
 class PostReaderView(DetailView):
