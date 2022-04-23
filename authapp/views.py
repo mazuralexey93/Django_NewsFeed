@@ -6,6 +6,7 @@ from authapp.models import User
 from django.contrib import messages
 from django.db import transaction
 from authapp.forms import UserLoginForm, UserRegisterForm, UserEditForm
+# from django.contrib.auth.decorators import permission_required
 
 from ArticleFeed.settings import AUTHENTICATION_BACKENDS
 
