@@ -324,3 +324,27 @@ table tr td
 .error {
 	background: rgb(255, 234, 234);
 }
+
+
+.post-url {
+    text-decoration: none;
+    color: #14274E;
+    min-height: var(--post-heigth);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    min-height: var(--post-heigth);
+    line-height: 30px;
+    padding: 10px;
+    margin: 15px 0;
+    border: 0.5px solid #14274E;
+    box-shadow: 0 0 4px #394867;
+    border-radius: 10px;
+}
