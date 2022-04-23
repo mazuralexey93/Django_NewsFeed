@@ -1,9 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect, HttpResponseRedirect
 from django.views.generic.list import ListView
+from django.views import View
 from posts.models import PostItem, Category
 from authapp.models import User
 from posts.forms import PostForm
 from urllib import request
+from django.urls import reverse_lazy, reverse
+from django.contrib import messages
+from django.utils.timezone import now
+
+
 
 class PostsListView(ListView):
     model = PostItem
@@ -19,7 +25,7 @@ class PostsListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(PostsListView, self).get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
-        context['posts'] = PostItem.objects.filter(public=True).order_by('-created_at')
+        context['posts'] = PostItem.objects.exclude(private=True).order_by('-created_at')
         return context
 
 
@@ -56,9 +62,59 @@ class UserPostView(ListView):
 
     def get(self, request):
         user = User.objects.get(id=request.user.id)
-        posts = PostItem.objects.filter(author_id=user)
+        posts = PostItem.objects.filter(author_id=user).order_by('-created_at')
         context = {
             'user': user,
             'posts': posts
         }
         return render(request, self.template_name, context)
+
+
+# class CreatePostView(View):
+#     template_name = 'post_create.html'
+#     success_url = reverse_lazy('index')
+#     form_class = PostForm
+#
+#     # @method_decorator(user_passes_test(lambda user: user.is_active, login_url='/auth/login/'))
+#     def get(self, request):
+#         context = {
+#             'title': 'Редактор',
+#             'form': self.form_class,
+#         }
+#         return render(request, self.template_name, context)
+#
+#     # @method_decorator(user_passes_test(lambda user: user.is_news_maker, login_url='/auth/login/'))
+#     def post(self, request, *args, **kwargs):
+#         form = self.form_class(data=request.POST)
+#         form.instance.user = self.request.user
+#         context = {'form': form}
+#         if form.is_valid():
+#             post = form.save(commit=False)
+#             post.author = self.request.user
+#             post.created_at = timezone.now()
+#             post.save()
+#
+#             messages.success(request, "Статья успешно создана!")
+#             return HttpResponseRedirect(reverse_lazy('index'))
+#         return render(request, self.template_name, context)
+
+
+def post_new(request):
+    title = 'новая статья'
+
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+
+        if PostForm.is_valid:
+            messages.success(request, "ок")
+
+            post = form.save(commit=False)
+            post.author = request.user
+            post.created_at = now()
+            post.save()
+            return HttpResponseRedirect(reverse('posts:usersposts'))
+    else:
+        form = PostForm()
+
+    context = {'form': form, 'title': title}
+    return render(request, 'post_create.html', context)

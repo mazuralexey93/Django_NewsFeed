@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="/static/css/style.css" title="style"/>
+{% endblock %}
+
+{% block pagecontent %}
+<!--<form class="news-form-body" action="{% url 'posts:editor' %}" method="post">-->
+<!--        {% csrf_token %}-->
+<!--        {{ form }}-->
+<!--    </form>-->
+<!--    {{ form.media }}-->
+<!--<button type="submit">Save</button>-->
+
+<div class="col-3 mx-auto">
+    <form class="form-horizontal" action="{% url 'posts:editor' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input class="form-control" type="submit" value="Save">
+    </form>
+</div>
+
+{% endblock %}
