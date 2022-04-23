@@ -120,7 +120,6 @@ def post_new(request):
     return render(request, 'post_create.html', context)
 
 
-@user_passes_test(lambda user: user.role=='auth', login_url='/auth/edit/')
 def post_edit(request, pk):
     title = 'редактировать статью'
     post = get_object_or_404(PostItem, pk=pk)
@@ -145,7 +144,6 @@ def post_edit(request, pk):
     return render(request, 'post_edit.html', context)
 
 
-@user_passes_test(lambda user: user.role=='auth', login_url='/auth/edit/')
 def post_delete(request, pk):
     title = 'удалить статью'
     post = get_object_or_404(PostItem, pk=pk)

@@ -17,8 +17,6 @@ class User(AbstractUser):
         ('auth', 'author')
     ]
 
-    # is_subscriber = models.BooleanField(default=True)
-    # is_auhor = models.BooleanField(default=False)
     activation_key = models.CharField(max_length=128, blank=True)
     activation_key_expires = models.DateTimeField(blank=True)
     activated = models.BooleanField('Активирован ли аккаунт', default=True)
