@@ -15,9 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import views
-from django.contrib.auth.decorators import login_required
 
+from django.contrib.auth.decorators import login_required
+from . import views
 
 from posts import urls as posts_urls
 from authapp import urls as authapp_urls
@@ -25,6 +25,7 @@ from authapp import urls as authapp_urls
 urlpatterns = [
     path('', views.index, name='index'),
     path('admin/', admin.site.urls),
+    path('markdownx/', include('markdownx.urls')),
 
 
     path('posts/', include(posts_urls, namespace='posts'), name='posts'),

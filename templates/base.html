@@ -30,7 +30,7 @@
 
             <li><a href="{% url 'posts:secretpostslist' %}">Для подписчиков</a></li>
             <li><a href="{% url 'authapp:login' %}">Авторизация</a></li>
-            <li><a href="contact.html">Стать Автором</a></li>
+            <li><a href="{% url 'posts:newpost' %}">Написать статью</a></li>
         </ul>
     </div>
 </div>
@@ -53,11 +53,8 @@
             <div>
                 <a href="{% url 'auth:logout' %}">Выйти</a>
             </div>
+
             <br>
-            <div>
-                <a href="{% url 'posts:secretpostslist' %}">Для подписчиков</a>
-            </div>
-                  <br>
             <div>
                 <a href="{% url 'posts:usersposts' %}">Мои статьи</a>
             </div>

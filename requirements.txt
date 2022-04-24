@@ -1,0 +1,14 @@
+asgiref==3.5.0
+bleach==5.0.0
+bleach-allowlist==1.0.3
+Django==4.0.4
+django-environ==0.8.1
+django-markdownx==3.0.1
+importlib-metadata==4.11.3
+Markdown==3.3.6
+Pillow==9.1.0
+six==1.16.0
+sqlparse==0.4.2
+tzdata==2022.1
+webencodings==0.5.1
+zipp==3.8.0

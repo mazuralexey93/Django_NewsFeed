@@ -12,15 +12,21 @@ from django.utils.translation import gettext as _
 
 class User(AbstractUser):
 
-    is_subscriber = models.BooleanField(default=True)
-    is_auhor = models.BooleanField(default=False)
+    CHOICES = [
+        ('sub', 'subscriber'),
+        ('auth', 'author')
+    ]
+
     activation_key = models.CharField(max_length=128, blank=True)
     activation_key_expires = models.DateTimeField(blank=True)
     activated = models.BooleanField('Активирован ли аккаунт', default=True)
+    role = models.CharField(max_length=300, choices=CHOICES)
 
     USERNAME_FIELD = 'email'
     email = models.EmailField(_('email address'), unique=True)  # changes email to unique and blank to false
     REQUIRED_FIELDS = ['username']  # removes email from REQUIRED_FIELDS
+
+    delete_flag = models.BooleanField(default=False)
 
 
     def save(self, *args, **kwargs):

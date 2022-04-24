@@ -12,12 +12,17 @@
   <div class="full-post">
         <div class="title">
             <h2>
-                 <div class="post-date">{{ post.created_at }}&nbsp;by&nbsp;{{ post.author_id }}</div>
+                 <div class="post-date">{{ post.created_at }}&nbsp;by&nbsp;{{ post.author }}</div>
             </h2>
 
         </div>
         {{ post.formatted_markdown | safe | linebreaksbr }}
     </div>
 </div>
+<p><a href="{% url 'posts:editpost' pk=post.pk %}">Редактировать</a></p>
+<p><a href="{% url 'posts:deletepost' pk=post.pk %}">Удалить</a></p>
+
+
+
 
 {% endblock %}

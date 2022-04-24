@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="/static/css/style.css" title="style"/>
+{% endblock %}
+
+{% block pagecontent %}
+<h2>Вы уверены, что хотите удалить статью?</h2>
+<form method="POST" class="post-form">
+    {% csrf_token %}
+    <input type="hidden" value="{{ post.pk }}">
+    <input type="submit" value="Delete">
+</form>
+<p><a href="../"><input type="button" name="Cancel" value="Cancel"></a></p>
+
+{% endblock %}
